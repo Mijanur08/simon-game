@@ -26,32 +26,41 @@ if(!started){
     })
 }
 
-$(".btn").click(function(){
-    let userChosenColor = this.id;
-    //console.log(userChosenColor);
-    animatePress(userChosenColor);
-    if( gamePattern[curr] == userChosenColor ){
-        playSound(userChosenColor);
-        curr++;
-    }
-
-    else{
-        $("#level-title").text("Game over! Press any Key to restart");
-        started = false;
-        playSound("wrong");
-        $("body").css({"background-color":"red"},{"opacity" : "0.8"});
-        setTimeout(function() {
-            $("body").css("background-color","#011F3F")
-        },200); //animating body color
-    }
-
-    if(curr == gamePattern.length){
-        setTimeout(function() {
-            nextSequence();
-        },500);        
+$("#level-title").click(function(e){
+    if(!started){
+        gamePattern = [];
+        started = true;
+        nextSequence();
     }
 })
 
+$(".btn").click(function(){
+    let userChosenColor = this.id;
+    //console.log(userChosenColor);
+    if(started){
+        animatePress(userChosenColor);
+        if( gamePattern[curr] == userChosenColor ){
+            playSound(userChosenColor);
+            curr++;
+        }
+
+        else{
+            $("#level-title").text("Game over! Press any Key to restart or click here");
+            started = false;
+            playSound("wrong");
+            $("body").css({"background-color":"red"},{"opacity" : "0.8"});
+            setTimeout(function() {
+                $("body").css("background-color","#011F3F")
+            },200); //animating body color
+        }
+
+        if(curr == gamePattern.length){
+            setTimeout(function() {
+                nextSequence();
+            },500);        
+        }
+    }
+})
 function animatePress(currentColor) {
     $("#" + currentColor).addClass("pressed");
     setTimeout(function () {
